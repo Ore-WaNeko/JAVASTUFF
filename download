@@ -1,2 +1,4 @@
-*.class
-/item-requests.txt
+/target/
+/data/
+/nbproject/private/
+*.log

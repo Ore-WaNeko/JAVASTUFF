@@ -1,0 +1,22 @@
+name: Milestone 1
+
+on: [push, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Build and test
+        run: mvn --batch-mode package
+      - name: Demonstrate registration, sign-in and proposals
+        run: java -jar target/lending-ledger-milestone-desktop.jar --demo

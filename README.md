@@ -1,29 +1,33 @@
-# MILESTONE 1 DEMONSTRATION
+# LENDING LEDGER AND SAVING CIRCLE
 
-The demo shows one part of **Lending Ledger and Saving Circle**. Enter a pending item loan request, exit the program, then reopen it and list the saved request. It uses a console and a text file. All steps run without a web server, SQL setup or administrator rights.
+## Milestone 1 desktop edition
 
-## NetBeans
+This edition demonstrates the original milestone's registration, sign-in and proposal stage. The Java Swing window shows separate Lending and Borrowing lists. Users can propose a money loan or an item loan with a registered friend and view the pending terms from either participant's account. It runs as a standard user and opens a desktop window without a web server.
 
-Use a computer that already has NetBeans and JDK 21, or use the GitHub route below.
+## Run in NetBeans
 
-1. Create a **Java with Ant > Java Application** project in a writable folder such as Documents.
-2. Under **Source Packages**, create a Java class named `LedgerCheckpoint`.
-3. Keep the generated `package` line if present. Replace the rest of the class file with the contents of `LedgerCheckpoint.java` from this folder.
-4. Right-click the class and select **Run File**. Enter the demo values in the **Output** window. [NetBeans Java quick start](https://netbeans.apache.org/tutorial/main/kb/docs/java/quickstart/)
+1. Extract the source ZIP to a writable folder such as Documents.
+2. In NetBeans, select **File > Open Project** and open the folder containing `pom.xml`. Select JDK 21 for the project.
+3. Select **Run Project**. NetBeans uses the included Maven action to start the desktop window. The first Maven build downloads its dependencies to the user account's Maven cache. [Maven projects in NetBeans](https://netbeans.apache.org/wiki/main/wiki/MavenBestPractices/)
+4. Follow [the demonstration](PROGRESS.md).
 
-You can also run `java LedgerCheckpoint.java` in a terminal from this folder with JDK 21.
+With Maven and JDK 21 already available, you can also run `mvn spring-boot:run` from the project folder. With the separately supplied executable JAR, a standard user with JDK 21 can open the app from a writable folder with `java -jar LLSC-milestone-1-desktop.jar`.
 
-## What to show
+## Run the demonstration on GitHub
 
-1. Choose **1. Add item request**.
-2. Enter `Desk lamp`, `Ana` as lender, `Ben` as borrower, `2026-11-12` as start date and `2026-11-19` as due date.
-3. Choose **0. Exit**. Run the same class again and choose **2. List requests**.
-4. Point out the saved `PENDING_TERMS` request. The console saves it in `item-requests.txt` in the working folder.
+1. Upload the extracted source files to the repository root, including the hidden `.github` folder. Choose a repository where you have write access and Actions is already enabled.
+2. Commit the files. Open **Actions > Milestone 1** and choose the new run.
+3. Expand **Demonstrate registration, sign-in and proposals**. The job registers sample accounts, verifies sign-in, saves and reads both types of proposal and checks access and validation. Share the completed run link with your professor.
 
-## GitHub Actions
+The GitHub runner performs the demonstration and prints the results. Your professor can view the results while signed in with read access. The workflow uses only read permissions for the repository token. [GitHub workflow logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs)
 
-1. Copy the extracted files to the root of a GitHub repository where you have write access and Actions is enabled. Include `.github/workflows/milestone-1-demo.yml`.
-2. Commit the files. The push starts **Milestone 1 demo**. It uses GitHub's runner and fictional data.
-3. Open **Actions > Milestone 1 demo**, select the completed run and expand **Save and reopen an item request**. Share that run link with your professor.
+To run the same demonstration from source:
 
-Your professor needs a signed-in GitHub account and read access to view the logs. Repository admin rights are unnecessary for viewing them. The repository must already allow Actions. [GitHub workflow logs](https://docs.github.com/en/actions/how-tos/monitor-workflows/use-workflow-run-logs)
+```sh
+mvn package
+java -jar target/lending-ledger-milestone-desktop.jar --demo
+```
+
+## Database
+
+The desktop app creates `data/milestone.mv.db` in its working folder. H2 is embedded in the Java application. The original three-table schema is included in [schema.sql](src/main/resources/schema.sql). The packaged source contains neither account records nor database files. The automated demonstration uses an in-memory database populated with fictional accounts.
