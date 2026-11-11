@@ -1,0 +1,29 @@
+name: Milestone 1 demo
+
+on: [push, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  item-request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Save and reopen an item request
+        shell: bash
+        run: |
+          demo_dir="$(mktemp -d)"
+          cd "$demo_dir"
+          javac -d . "$GITHUB_WORKSPACE/LedgerCheckpoint.java"
+          printf '%s\n' 1 'Desk lamp' Ana Ben 2026-11-12 2026-11-19 0 |
+            java LedgerCheckpoint | tee add-output.txt
+          grep -Fq 'Request saved.' add-output.txt
+          printf '%s\n' 2 0 | java LedgerCheckpoint | tee list-output.txt
+          grep -Fq 'Desk lamp | Lender: Ana | Borrower: Ben | 2026-11-12 to 2026-11-19 | PENDING_TERMS' list-output.txt
